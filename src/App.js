@@ -47,6 +47,35 @@ const App = () => {
     setPassword("");
   };
 
+  const handleLogout = () => {
+    dispatch(logoutUser());
+  };
+
+  const handleAddPlaylist = async (event) => {
+    event.preventDefault();
+    dispatch(
+      createPlaylistAction({
+        name: playlistName,
+        creator,
+        numOfSongs: numOfSongs === "" || numOfSongs < 0 ? 0 : numOfSongs,
+        likes: likes === "" || likes < 0 ? 0 : likes,
+        user: loggedUser,
+      })
+    );
+    setPlaylistName("");
+    setCreator("");
+    setNumOfSongs("");
+    setLikes("");
+  };
+
+  const handleLike = (id, likes) => {
+    dispatch(likePlaylistAction(id, likes));
+  };
+
+  const handleRemove = async (id) => {
+    dispatch(deletePlaylistAction(id, loggedUser));
+  };
+
   const notify = ({ message, type }) => {
     setNotification({ message, type });
     setTimeout(() => {
@@ -77,10 +106,6 @@ const App = () => {
     </form>
   );
 
-  const handleLogout = () => {
-    dispatch(logoutUser());
-  };
-
   const displayPlaylists = () => (
     <>
       <h2>Playlist Application</h2>
@@ -102,23 +127,6 @@ const App = () => {
       ))}
     </>
   );
-
-  const handleAddPlaylist = async (event) => {
-    event.preventDefault();
-    dispatch(
-      createPlaylistAction({
-        name: playlistName,
-        creator,
-        numOfSongs: numOfSongs === "" || numOfSongs < 0 ? 0 : numOfSongs,
-        likes: likes === "" || likes < 0 ? 0 : likes,
-        user: loggedUser,
-      })
-    );
-    setPlaylistName("");
-    setCreator("");
-    setNumOfSongs("");
-    setLikes("");
-  };
 
   const addPlaylistForm = () => (
     <form onSubmit={handleAddPlaylist}>
@@ -164,14 +172,6 @@ const App = () => {
       </button>
     </form>
   );
-
-  const handleLike = (id, likes) => {
-    dispatch(likePlaylistAction(id, likes));
-  };
-
-  const handleRemove = async (id) => {
-    dispatch(deletePlaylistAction(id, loggedUser));
-  };
 
   return (
     <div>
