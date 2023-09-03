@@ -22,7 +22,6 @@ import {
 const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [notification, setNotification] = useState(null);
   const [playlistName, setPlaylistName] = useState("");
   const [creator, setCreator] = useState("");
   const [numOfSongs, setNumOfSongs] = useState("");
@@ -31,6 +30,7 @@ const App = () => {
   const dispatch = useDispatch();
   const loggedUser = useSelector((state) => state.loggedUser);
   const playlists = useSelector((state) => state.playlists);
+  const notification = useSelector((state) => state.notification);
 
   useEffect(() => {
     dispatch(fetchPlaylists());
@@ -74,13 +74,6 @@ const App = () => {
 
   const handleRemove = async (id) => {
     dispatch(deletePlaylistAction(id, loggedUser));
-  };
-
-  const notify = ({ message, type }) => {
-    setNotification({ message, type });
-    setTimeout(() => {
-      setNotification(null);
-    }, 10000);
   };
 
   const userLoginForm = () => (
@@ -175,7 +168,7 @@ const App = () => {
 
   return (
     <div>
-      {notification && <Notification notification={notification} />}
+      {notification && <Notification />}
       {loggedUser ? displayPlaylists() : userLoginForm()}
       {loggedUser && addPlaylistForm()}
     </div>

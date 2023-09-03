@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import loginService from "../services/loginService";
 import playlistService from "../services/playlistService";
+import { notify } from "./notificationReducer";
 
 const initialState = null;
 
@@ -27,9 +28,9 @@ export const loginUser = (credentials) => {
       dispatch(login(user));
       window.localStorage.setItem("userData", JSON.stringify(user));
       playlistService.setAuthorization(user.token);
-      console.log("login successful");
+      dispatch(notify({ message: "Login Successfull", type: "info" }));
     } catch (error) {
-      console.log("Wrong Credentials");
+      dispatch(notify({ message: "Wrong Credentials", type: "warning" }));
     }
   };
 };

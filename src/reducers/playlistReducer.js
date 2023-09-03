@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import playlistService from "../services/playlistService";
+import { notify } from "./notificationReducer";
 
 const initialState = [];
 
@@ -58,10 +59,10 @@ export const deletePlaylistAction = (id, user) => {
     try {
       playlistService.setAuthorization(user.token);
       await playlistService.removePlaylist(id);
-      console.log("Delete successfull");
+      dispatch(notify({ message: "Delete successfull", type: "info" }));
       dispatch(deletePlaylist(id));
     } catch (error) {
-      console.log("Error deleting playlist");
+      dispatch(notify({ message: "Error deleting playlist", type: "warning" }));
     }
   };
 };
@@ -83,11 +84,15 @@ export const createPlaylistAction = ({
         likes,
       });
       playlist.user = user;
-      console.log("playlist: ", playlist);
       dispatch(createPlaylist(playlist));
-      console.log("new playlist: ", playlist);
+      dispatch(
+        notify({
+          message: `New Playlist (${playlist.name}) added!`,
+          type: "info",
+        })
+      );
     } catch (error) {
-      console.log("Error creating playlist");
+      dispatch(notify({ message: "Error creating playlist", type: "warning" }));
     }
   };
 };
