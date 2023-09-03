@@ -1,14 +1,20 @@
 import { useState, useEffect } from "react";
 import Playlist from "./components/Playlist";
 import playlistService from "./services/playlistService";
-import loginService from "./services/loginService";
 import Notification from "./components/Notification";
 import Section from "./components/Section";
 import "./App.css";
 
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  localStorageUser,
+  loginUser,
+  logoutUser,
+} from "./reducers/loginReducer";
+
 const App = () => {
   const [playlists, setPlaylists] = useState([]);
-  const [userObject, setUserObject] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [notification, setNotification] = useState(null);
@@ -17,29 +23,20 @@ const App = () => {
   const [numOfSongs, setNumOfSongs] = useState("");
   const [likes, setLikes] = useState("");
 
+  const dispatch = useDispatch();
+  const loggedUser = useSelector((state) => state.loggedUser);
+
   useEffect(() => {
     playlistService.getPlaylists().then((playlists) => setPlaylists(playlists));
   }, []);
 
   useEffect(() => {
-    const storedUserData = localStorage.getItem("userData");
-    if (storedUserData) {
-      setUserObject(JSON.parse(storedUserData));
-    }
+    dispatch(localStorageUser());
   }, []);
 
   const handleLogin = async (event) => {
-    event.preventDefault(); // Prevent the default form submission behavior
-    try {
-      const user = await loginService.initiateLogin({
-        username,
-        password,
-      });
-      setUserObject(user);
-      localStorage.setItem("userData", JSON.stringify(user));
-    } catch (exception) {
-      notify({ message: "Login failed", type: "warning" });
-    }
+    event.preventDefault();
+    dispatch(loginUser({ username, password }));
     setUsername("");
     setPassword("");
   };
@@ -75,14 +72,13 @@ const App = () => {
   );
 
   const handleLogout = () => {
-    setUserObject(null);
-    localStorage.removeItem("userData");
+    dispatch(logoutUser());
   };
 
   const displayPlaylists = () => (
     <>
       <h2>Playlist Application</h2>
-      <em>Howdy, {userObject.username}! </em>
+      <em>Howdy, {loggedUser.username}! </em>
       <button onClick={handleLogout}>Log Out</button>
       <h3>Playlists</h3>
       {playlists.map((playlist) => (
@@ -94,7 +90,7 @@ const App = () => {
             playlist={playlist}
             handleLike={handleLike}
             handleRemove={handleRemove}
-            username={userObject.username}
+            username={loggedUser.username}
           />
         </Section>
       ))}
@@ -104,14 +100,15 @@ const App = () => {
   const handleAddPlaylist = async (event) => {
     event.preventDefault();
     try {
-      playlistService.setAuthorization(userObject.token);
+      playlistService.setAuthorization(loggedUser.token);
       const newPlaylist = await playlistService.addNewPlaylist({
         name: playlistName,
         creator,
         numOfSongs: numOfSongs === "" || numOfSongs < 0 ? 0 : numOfSongs,
         likes: likes === "" || likes < 0 ? 0 : likes,
       });
-      setPlaylists([...playlists, newPlaylist]);
+
+      setPlaylists([...playlists, { ...newPlaylist, user: loggedUser }]);
       notify({
         message: `${playlistName} by ${creator} added to playlists.`,
         type: "info",
@@ -188,7 +185,7 @@ const App = () => {
 
   const handleRemove = async (id) => {
     try {
-      playlistService.setAuthorization(userObject.token);
+      playlistService.setAuthorization(loggedUser.token);
       await playlistService.removePlaylist(id);
       notify({
         message: "Delete successfull.",
@@ -206,8 +203,8 @@ const App = () => {
   return (
     <div>
       {notification && <Notification notification={notification} />}
-      {userObject ? displayPlaylists() : userLoginForm()}
-      {userObject && addPlaylistForm()}
+      {loggedUser ? displayPlaylists() : userLoginForm()}
+      {loggedUser && addPlaylistForm()}
     </div>
   );
 };
