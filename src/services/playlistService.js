@@ -9,8 +9,8 @@ const setAuthorization = (token) => {
   };
 };
 
-const addNewPlaylist = async (newTodoObject) => {
-  const response = await axios.post(API_URL, newTodoObject, authorization);
+const addNewPlaylist = async (newPlaylist) => {
+  const response = await axios.post(API_URL, newPlaylist, authorization);
   return response.data;
 };
 

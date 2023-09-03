@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import Playlist from "./components/Playlist";
-import playlistService from "./services/playlistService";
 import Notification from "./components/Notification";
 import Section from "./components/Section";
 import "./App.css";
@@ -13,8 +12,14 @@ import {
   logoutUser,
 } from "./reducers/loginReducer";
 
+import {
+  fetchPlaylists,
+  likePlaylistAction,
+  deletePlaylistAction,
+  createPlaylistAction,
+} from "./reducers/playlistReducer";
+
 const App = () => {
-  const [playlists, setPlaylists] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [notification, setNotification] = useState(null);
@@ -25,9 +30,10 @@ const App = () => {
 
   const dispatch = useDispatch();
   const loggedUser = useSelector((state) => state.loggedUser);
+  const playlists = useSelector((state) => state.playlists);
 
   useEffect(() => {
-    playlistService.getPlaylists().then((playlists) => setPlaylists(playlists));
+    dispatch(fetchPlaylists());
   }, []);
 
   useEffect(() => {
@@ -99,27 +105,15 @@ const App = () => {
 
   const handleAddPlaylist = async (event) => {
     event.preventDefault();
-    try {
-      playlistService.setAuthorization(loggedUser.token);
-      const newPlaylist = await playlistService.addNewPlaylist({
+    dispatch(
+      createPlaylistAction({
         name: playlistName,
         creator,
         numOfSongs: numOfSongs === "" || numOfSongs < 0 ? 0 : numOfSongs,
         likes: likes === "" || likes < 0 ? 0 : likes,
-      });
-
-      setPlaylists([...playlists, { ...newPlaylist, user: loggedUser }]);
-      notify({
-        message: `${playlistName} by ${creator} added to playlists.`,
-        type: "info",
-      });
-    } catch (error) {
-      notify({
-        message: error.response.data.error,
-        type: "warning",
-      });
-    }
-
+        user: loggedUser,
+      })
+    );
     setPlaylistName("");
     setCreator("");
     setNumOfSongs("");
@@ -171,33 +165,12 @@ const App = () => {
     </form>
   );
 
-  const handleLike = async (id, likes) => {
-    await playlistService.updatePlaylist(id, {
-      likes,
-    });
-
-    setPlaylists(
-      [...playlists].map((playlist) =>
-        playlist.id === id ? { ...playlist, likes } : playlist
-      )
-    );
+  const handleLike = (id, likes) => {
+    dispatch(likePlaylistAction(id, likes));
   };
 
   const handleRemove = async (id) => {
-    try {
-      playlistService.setAuthorization(loggedUser.token);
-      await playlistService.removePlaylist(id);
-      notify({
-        message: "Delete successfull.",
-        type: "info",
-      });
-      setPlaylists([...playlists].filter((playlist) => playlist.id !== id));
-    } catch (error) {
-      notify({
-        message: `${error.response.data.message}`,
-        type: "warning",
-      });
-    }
+    dispatch(deletePlaylistAction(id, loggedUser));
   };
 
   return (
