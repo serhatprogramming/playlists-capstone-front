@@ -32,48 +32,68 @@ const PlaylistFormView = () => {
   };
 
   return (
-    <form onSubmit={handleAddPlaylist}>
-      <h3>Add Playlists</h3>
+    <div className="playlist-form-container">
+      <h3 className="playlist-form-title">Add Playlists</h3>
       <div>
-        Playlist Name:
+        <label htmlFor="playlist-name" className="playlist-form-label">
+          Playlist Name:
+        </label>
         <input
           type="text"
+          id="playlist-name"
           value={playlistName}
           onChange={(e) => setPlaylistName(e.target.value)}
+          className="playlist-form-input"
           data-testid="playlist-name"
         />
       </div>
       <div>
-        Creator:
+        <label htmlFor="creator" className="playlist-form-label">
+          Creator:
+        </label>
         <input
           type="text"
+          id="creator"
           value={creator}
           onChange={(e) => setCreator(e.target.value)}
+          className="playlist-form-input"
           data-testid="creator"
         />
       </div>
       <div>
-        Number of Songs:
+        <label htmlFor="songs" className="playlist-form-label">
+          Number of Songs:
+        </label>
         <input
           type="number"
+          id="songs"
           value={numOfSongs}
           onChange={(e) => setNumOfSongs(e.target.value)}
+          className="playlist-form-input"
           data-testid="songs"
         />
       </div>
       <div>
-        Likes:
+        <label htmlFor="likes" className="playlist-form-label">
+          Likes:
+        </label>
         <input
           type="number"
+          id="likes"
           value={likes}
           onChange={(e) => setLikes(e.target.value)}
+          className="playlist-form-input"
           data-testid="likes"
         />
       </div>
-      <button data-testid="add-playlist-button" type="submit">
+      <button
+        type="submit"
+        className="playlist-form-button"
+        data-testid="add-playlist-button"
+      >
         Add Playlist
       </button>
-    </form>
+    </div>
   );
 };
 

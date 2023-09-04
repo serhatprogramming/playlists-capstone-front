@@ -9,12 +9,14 @@ const Users = () => {
   }
 
   return (
-    <div>
-      <h2>Users</h2>
-      <ul>
+    <div className="users-container">
+      <h2 className="users-title">Users</h2>
+      <ul className="users-list">
         {users.map((user) => (
-          <li key={user.id}>
-            <Link to={`/user/${user.id}`}>{user.name}</Link>{" "}
+          <li key={user.id} className="users-list-item">
+            <Link to={`/user/${user.id}`} className="users-link">
+              {user.name}
+            </Link>
           </li>
         ))}
       </ul>

@@ -1,8 +1,7 @@
 const Footer = () => {
   return (
-    <div>
-      <hr />
-      <strong>Your Rhythm, Your Playlists – Groove On! </strong>
+    <div className="footer">
+      <span>Your Rhythm, Your Playlists – Groove On! </span>
       <em>TechnoStudy</em>
     </div>
   );

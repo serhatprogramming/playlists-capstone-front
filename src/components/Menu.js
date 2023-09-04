@@ -10,30 +10,46 @@ const Menu = () => {
     dispatch(logoutUser());
   };
 
-  const menuStyle = {
-    display: "flex",
-    justifyContent: "left",
-    padding: "10px",
-    gap: "10px",
-  };
-
   return (
-    <div style={menuStyle}>
-      <Link to="/">Home</Link>
-      <Link to="/about">About</Link>
-      {loggedUser && <Link to="/playlists">Playlists</Link>}
-
-      {loggedUser ? (
-        <>
-          <Link to="/users">Users</Link>
-          <Link to="/create">Add Playlist</Link>
-          <em>Howdy, {loggedUser.username}! </em>
-          <button onClick={handleLogout}>Log Out</button>
-        </>
-      ) : (
-        <Link to="/login">Login</Link>
-      )}
-    </div>
+    <nav className="menu">
+      <div className="menu-left">
+        <ul className="menu-list">
+          <li className="menu-item">
+            <Link to="/">Home</Link>
+          </li>
+          <li className="menu-item">
+            <Link to="/about">About</Link>
+          </li>
+          {loggedUser && (
+            <>
+              <li className="menu-item">
+                <Link to="/playlists">Playlists</Link>
+              </li>
+              <li className="menu-item">
+                <Link to={"/users"}>Users</Link>
+              </li>
+              <li className="menu-item">
+                <Link to={"/create"}>Add Playlist</Link>
+              </li>
+            </>
+          )}
+        </ul>
+      </div>
+      <div className="menu-right">
+        {loggedUser ? (
+          <>
+            <span className="user-greeting">Howdy, {loggedUser.username}!</span>
+            <button onClick={handleLogout} className="logout-button">
+              Log Out
+            </button>
+          </>
+        ) : (
+          <Link to="/login" className="menu-item">
+            Login
+          </Link>
+        )}
+      </div>
+    </nav>
   );
 };
 

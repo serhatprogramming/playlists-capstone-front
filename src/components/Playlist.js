@@ -12,16 +12,21 @@ const Playlist = ({ playlist, handleLike, username, handleRemove }) => {
   return (
     <div>
       <div>
-        {playlist.name} by {playlist.creator}
+        <strong>
+          {playlist.name} by {playlist.creator}
+        </strong>
       </div>
       <div>{playlist.numOfSongs} songs</div>
-      <div>
-        {playlist.likes} likes <button onClick={addLike}>like</button>
+      <div className="playlist-likes">
+        {playlist.likes} likes{" "}
+        <button onClick={addLike} className="like-button">
+          Like
+        </button>
       </div>
       <div className="playlist-owner">
         Added by <em data-testid="username-id">{playlist.user.username}</em>{" "}
         {playlist.user.username === username && (
-          <button className="small-button" onClick={removePlaylist}>
+          <button onClick={removePlaylist} className="remove-button">
             Remove the playlist
           </button>
         )}

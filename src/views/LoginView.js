@@ -16,26 +16,34 @@ const LoginView = () => {
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <h3>Log in to playlist application</h3>
-      <div>
-        username
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>
+    <div className="login-container">
+      <form onSubmit={handleLogin} className="login-form">
+        <div className="login-title">Log in to Playlist Application</div>
+        <div className="input-group">
+          <label htmlFor="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="input-field"
+          />
+        </div>
+        <div className="input-group">
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="input-field"
+          />
+        </div>
+        <button type="submit" className="login-button">
+          Login
+        </button>
+      </form>
+    </div>
   );
 };
 

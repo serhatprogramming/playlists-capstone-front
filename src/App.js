@@ -34,23 +34,31 @@ const App = () => {
 
   return (
     <Router>
-      {notification && <Notification />}
       <Menu />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route
-          path="/create"
-          element={loggedUser ? <PlaylistFormView /> : <Home />}
-        />
-        <Route path="/about" element={<About />} />
-        <Route path="/login" element={!loggedUser ? <LoginView /> : <Home />} />
-        <Route
-          path="/playlists"
-          element={loggedUser ? <PlaylistsView /> : <LoginView />}
-        />
-        <Route path="/users" element={loggedUser ? <Users /> : <LoginView />} />
-        <Route path="/user/:id" element={<UserDetails />} />
-      </Routes>
+      <div className="page-container">
+        {notification && <Notification />}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route
+            path="/create"
+            element={loggedUser ? <PlaylistFormView /> : <Home />}
+          />
+          <Route path="/about" element={<About />} />
+          <Route
+            path="/login"
+            element={!loggedUser ? <LoginView /> : <Home />}
+          />
+          <Route
+            path="/playlists"
+            element={loggedUser ? <PlaylistsView /> : <LoginView />}
+          />
+          <Route
+            path="/users"
+            element={loggedUser ? <Users /> : <LoginView />}
+          />
+          <Route path="/user/:id" element={<UserDetails />} />
+        </Routes>
+      </div>
       <Footer />
     </Router>
   );

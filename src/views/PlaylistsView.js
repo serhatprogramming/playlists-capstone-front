@@ -28,22 +28,24 @@ const PlaylistsView = () => {
   };
 
   return (
-    <>
-      <h2>Playlists</h2>
-      {playlists.map((playlist) => (
-        <Section
-          componentTitle={playlist.name + " by " + playlist.creator}
-          key={playlist.id}
-        >
-          <Playlist
-            playlist={playlist}
-            handleLike={handleLike}
-            handleRemove={handleRemove}
-            username={loggedUser.username}
-          />
-        </Section>
-      ))}
-    </>
+    <div className="playlists-container">
+      <div className="home-content">
+        <h2 className="playlists-title">Playlists</h2>
+        {playlists.map((playlist) => (
+          <Section
+            componentTitle={playlist.name + " by " + playlist.creator}
+            key={playlist.id}
+          >
+            <Playlist
+              playlist={playlist}
+              handleLike={handleLike}
+              handleRemove={handleRemove}
+              username={loggedUser.username}
+            />
+          </Section>
+        ))}
+      </div>
+    </div>
   );
 };
 

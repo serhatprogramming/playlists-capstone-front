@@ -9,17 +9,19 @@ const Section = ({ componentTitle, children }) => {
 
   return (
     <div className="section">
-      <strong>{showDetails ? null : componentTitle}</strong>
+      <div className="section-title">
+        <strong>{showDetails ? null : componentTitle}</strong>
+      </div>
       {showDetails ? (
         <>
-          {children}
-          <button className="small-button" onClick={toggleDetails}>
-            Hide Details
+          <div className="section-content">{children}</div>
+          <button onClick={toggleDetails} className="section-button-hide">
+            {showDetails ? "Hide Details" : "Show Details"}
           </button>
         </>
       ) : (
-        <button className="small-button" onClick={toggleDetails}>
-          Show Details
+        <button onClick={toggleDetails} className="section-button">
+          {showDetails ? "Hide Details" : "Show Details"}
         </button>
       )}
     </div>
