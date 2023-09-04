@@ -9,11 +9,13 @@ import Users from "./views/Users";
 import LoginView from "./views/LoginView";
 import PlaylistsView from "./views/PlaylistsView";
 import PlaylistFormView from "./views/PlaylistFormView";
+import UserDetails from "./views/UserDetails";
 
 import "./App.css";
 
 import { useDispatch, useSelector } from "react-redux";
 import { localStorageUser } from "./reducers/loginReducer";
+import { fetchUsers } from "./reducers/usersReducer";
 
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
@@ -24,6 +26,10 @@ const App = () => {
 
   useEffect(() => {
     dispatch(localStorageUser());
+  }, []);
+
+  useEffect(() => {
+    dispatch(fetchUsers());
   }, []);
 
   return (
@@ -42,7 +48,8 @@ const App = () => {
           path="/playlists"
           element={loggedUser ? <PlaylistsView /> : <LoginView />}
         />
-        <Route path="/users" element={<Users />} />
+        <Route path="/users" element={loggedUser ? <Users /> : <LoginView />} />
+        <Route path="/user/:id" element={<UserDetails />} />
       </Routes>
       <Footer />
     </Router>
