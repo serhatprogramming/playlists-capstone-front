@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createPlaylistAction } from "../reducers/playlistReducer";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const PlaylistFormView = () => {
   const [playlistName, setPlaylistName] = useState("");
@@ -8,6 +9,7 @@ const PlaylistFormView = () => {
   const [numOfSongs, setNumOfSongs] = useState("");
   const [likes, setLikes] = useState("");
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const loggedUser = useSelector((state) => state.loggedUser);
 
@@ -26,6 +28,7 @@ const PlaylistFormView = () => {
     setCreator("");
     setNumOfSongs("");
     setLikes("");
+    navigate("/playlists");
   };
 
   return (

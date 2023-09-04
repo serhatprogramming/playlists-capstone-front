@@ -1,12 +1,21 @@
 import { useEffect } from "react";
 import Notification from "./components/Notification";
-import LoginForm from "./components/LoginForm";
-import PlaylistForm from "./components/PlaylistForm";
-import Playlists from "./components/Playlists";
+import Footer from "./components/Footer";
+
+import Home from "./views/Home";
+import About from "./views/About";
+import Menu from "./components/Menu";
+import Users from "./views/Users";
+import LoginView from "./views/LoginView";
+import PlaylistsView from "./views/PlaylistsView";
+import PlaylistFormView from "./views/PlaylistFormView";
+
 import "./App.css";
 
 import { useDispatch, useSelector } from "react-redux";
 import { localStorageUser } from "./reducers/loginReducer";
+
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -18,11 +27,25 @@ const App = () => {
   }, []);
 
   return (
-    <div>
+    <Router>
       {notification && <Notification />}
-      {loggedUser ? <Playlists /> : <LoginForm />}
-      {loggedUser && <PlaylistForm />}
-    </div>
+      <Menu />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route
+          path="/create"
+          element={loggedUser ? <PlaylistFormView /> : <Home />}
+        />
+        <Route path="/about" element={<About />} />
+        <Route path="/login" element={!loggedUser ? <LoginView /> : <Home />} />
+        <Route
+          path="/playlists"
+          element={loggedUser ? <PlaylistsView /> : <LoginView />}
+        />
+        <Route path="/users" element={<Users />} />
+      </Routes>
+      <Footer />
+    </Router>
   );
 };
 
