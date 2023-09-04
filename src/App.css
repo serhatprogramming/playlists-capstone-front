@@ -414,26 +414,29 @@ label {
 /* USER DETAILS */
 /* Add this to your existing CSS or create a new CSS file */
 
-.user-details-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  text-align: center;
-  background-color: #fff; /* Optional: Add a background color to the container */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a box shadow */
+/* Add this to your existing CSS or create a new CSS file */
+
+.user-details-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 20px;
 }
 
-.user-details-title {
-  font-size: 32px;
+.user-details-table th {
+  background-color: #007bff;
+  color: #fff;
   font-weight: bold;
-  color: #333;
-  margin-bottom: 20px;
+  padding: 10px;
+  text-align: left;
 }
 
-.user-details-text {
-  font-size: 18px;
-  color: #333;
-  margin-bottom: 10px;
+.user-details-table tr:nth-child(even) {
+  background-color: #f0f0f0; /* Alternate row color */
+}
+
+.user-details-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ccc; /* Add a border to separate rows */
 }
 
 .user-details-link {
